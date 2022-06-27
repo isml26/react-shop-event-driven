@@ -3,10 +3,9 @@ import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
-
 import FormInput from "../form-input/form-input-component-";
 import Button from "../button/button-component";
-import './sing-up-form.styles.scss';
+import "./sing-up-form.styles.scss";
 
 const defaultFormFields = {
   displayName: "",
@@ -37,7 +36,6 @@ function SignUpForm() {
         email,
         password
       );
-
       await createUserDocumentFromAuth(user, { displayName });
       resetFormFields();
     } catch (err) {
