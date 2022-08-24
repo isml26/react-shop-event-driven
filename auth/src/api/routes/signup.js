@@ -1,12 +1,16 @@
 const express = require("express");
+const User = require("../../models/user.model");
 const { UserValidate } = require("../../validators/auth");
 const { validationResult } = require("express-validator");
+
 const {
   RequestValidationError,
 } = require("../../../../common//src/errors/request.validation.error");
+
 const {
-  DatabaseConnectionError,
-} = require("../../../../common/src/errors/database.connection.error");
+  BadRequestError,
+} = require("../../../../common//src/errors/bad.request.error");
+
 const router = express.Router();
 
 router.post("/api/users/signup", UserValidate.singup, async (req, res) => {
@@ -15,10 +19,25 @@ router.post("/api/users/signup", UserValidate.singup, async (req, res) => {
   if (!errors.isEmpty()) {
     throw new RequestValidationError(errors);
   }
-  // const { email, password } = req.body;
-  console.log("creating user");
-  throw new DatabaseConnectionError(errors);
-  res.send({});
+  // const user = await User.findOne({email:"asdlkşas@hotmaisl.com"}).exec()
+
+  const { email, password } = req.body;
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    throw new BadRequestError("Email in use")
+  }
+
+  const newUser = new User({
+    email,
+    password,
+  });
+  try {
+    const user = await newUser.save();
+    res.status(201).json(user);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = {

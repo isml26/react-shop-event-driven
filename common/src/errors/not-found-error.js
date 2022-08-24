@@ -6,7 +6,7 @@ class NotFoundError extends CustomError {
     super("Route not found");
   }
   serializeErrors() {
-    return [{ message: "Not Found" }];
+    return [{ message: this.message }];
   }
 }
 

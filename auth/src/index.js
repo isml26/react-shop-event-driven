@@ -1,24 +1,12 @@
-const express = require("express");
-require("express-async-errors");
-const authRoutes = require("./api/index");
-const { errorHandler } = require("../../common/src/middlewares/error.handler");
-const { NotFoundError } = require("../../common/src/errors/not-found-error");
+const app = require("./loaders/app");
+const { connectDB } = require("./loaders/mongoose");
 
-const app = express();
-app.use(express.json());
 
-app.use(authRoutes);
+async function startServer() {
+  app.listen(3001, () => {
+    console.log("Listening on 3001");
+  });
+  connectDB();
+}
 
-app.all("*", async () => {
-  throw new NotFoundError();
-});
-
-app.use(errorHandler);
-
-app.get("/", (req, res) => {
-  res.send("helloğ");
-});
-
-app.listen(3001, () => {
-  console.log("Listening on 3001");
-});
+startServer();
