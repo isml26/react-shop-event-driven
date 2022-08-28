@@ -16,9 +16,12 @@ const userSchema = new Schema(
   {
     timestamps: false,
     versionKey: false,
+    // @doc the mongoose document which is being converted
+    // @ret the plain object representation whcih has been converted
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;
+        delete ret.password;
         delete ret._id;
       },
     },
