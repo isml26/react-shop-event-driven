@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif; */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+/**
+assume that we have container 50 x 70 and if we add padding 25px container will be 100 x 120
+to prevent this and make sure that with keeps same we add border-box  
+*/
+
+*{
+ box-sizing: border-box; 
+}
