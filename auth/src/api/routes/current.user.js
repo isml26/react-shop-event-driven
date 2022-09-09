@@ -4,12 +4,13 @@ const {
   currentUser,
 } = require("../../../../common/src/middlewares/current.user");
 
+const {EmailConfirmedPublisher} = require("../../events/publishers/email.confirmed.publisher")
 const router = express.Router();
 
-router.get("/api/users/currentUser", currentUser,(req, res) => {
+router.get("/api/users/currentUser", currentUser, (req, res) => {
   // check req.session whether set or not
-  res.send({currentUser:req.currentUser || null});
-
+  new EmailConfirmedPublisher(global.producer).publish("This is a test message")
+  res.send({ currentUser: req.currentUser || null });
 
   // if (!req.session?.jwt) {
   //   return res.send({ currentUser: null });
