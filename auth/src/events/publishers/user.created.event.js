@@ -1,11 +1,18 @@
-class BasePublisher {
+const {
+  BasePublisher,
+} = require("../../../../common/src/events/base.publisher");
+const {
+  UserCreatedEvent,
+} = require("../../../../common/src/events/user.created.event");
+
+class UserCreatedPublisher extends BasePublisher {
   client;
-  event;
+  event = UserCreatedEvent;
   constructor(client) {
+    super(client);
     this.client = client;
   }
   async publish(message) {
-    console.log(this.event)
     try {
       await this.client.send({
         topic: this.event.topic,
@@ -24,4 +31,4 @@ class BasePublisher {
   }
 }
 
-module.exports = { BasePublisher };
+module.exports = { UserCreatedPublisher };

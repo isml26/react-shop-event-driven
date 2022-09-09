@@ -12,15 +12,16 @@ async function startServer() {
   }
   try {
     await kafkaWrapper.connect(KAFKA_CONFIG);
-    await new EmailConfirmedListener(global.kafka).listen();
+    await new EmailConfirmedListener(global.consumer).listen();
   } catch (error) {
     console.log(error);
   }
 
+  // connectDB();
+  
   app.listen(3001, () => {
     console.log("Listening on 3001");
   });
-  connectDB();
 }
 
 startServer();
