@@ -1,8 +1,11 @@
 "use strict";
 const nodemailer = require("nodemailer");
+const fs = require("fs")
+// const fetch = require("node-fetch")
 
 // async..await is not allowed in global scope, must use a wrapper
-async function main() {
+
+async function send_email(user_data) {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   let testAccount = await nodemailer.createTestAccount();
@@ -17,14 +20,15 @@ async function main() {
       pass: "wextsqvhgrtlbath", // generated ethereal password
     },
   });
+  // const resp = await fetch("index.html");
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Capstone 👻" <info@capstone.com>', // sender address
-    to: "iguven1999@hotmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
+    to: user_data.email, // list of receivers
+    subject: "Email Confirmation ✔", // Subject line
     text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+    html: `http://localhost:3002/api/email/confirm/${user_data.id}` // html body
   });
 
   console.log("Message sent: %s", info.messageId);
@@ -36,4 +40,12 @@ async function main() {
 }
 
 // main().catch(console.error);
-console.log(process.env.USER)
+
+// send_email({
+//   id:"kjsadışsl",
+//   email:"iguven1999@hotmail.com"
+// })
+
+module.exports = {
+  send_email,
+};

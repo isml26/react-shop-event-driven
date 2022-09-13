@@ -1,4 +1,4 @@
-const express = require("express");
+import express from "express";
 
 const router = express.Router();
 
@@ -7,6 +7,4 @@ router.post("/api/users/signout", (req, res) => {
   res.send({});
 });
 
-module.exports = {
-  signout: router,
-};
+export { router as signoutRouter };
