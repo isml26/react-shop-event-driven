@@ -1,7 +1,7 @@
-const { body } = require("express-validator");
+import { body } from "express-validator";
 
-class UserValidate {
-  static singup = [
+export class UserValidate {
+  static signup = [
     body("email").isEmail().withMessage("Email must be valid"),
     body("password")
       .trim()
@@ -13,10 +13,6 @@ class UserValidate {
     body("password")
       .trim()
       .notEmpty()
-      .withMessage("You musta supply a password")
+      .withMessage("You must supply a password"),
   ];
 }
-
-module.exports = {
-  UserValidate,
-};
