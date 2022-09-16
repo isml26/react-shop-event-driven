@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 interface UserPayload {
   id: string;
   email: string;
-  confirmed: boolean;
+  confirmed:boolean;
 }
 
 declare global {
@@ -30,6 +30,8 @@ export const currentUser = (
       req.session.jwt,
       process.env.JWT_KEY!
     ) as UserPayload;
+    //@ts-ignore
+    delete payload["iat"]
     req.currentUser = payload;
     next();
   } catch (err) {

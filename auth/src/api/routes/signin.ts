@@ -5,7 +5,6 @@ import { User } from "../../models/User";
 import { UserValidate } from "../../validators/auth";
 import { validateRequest, BadRequestError } from "@igcommon/common";
 
-
 const router = express.Router();
 
 router.post(

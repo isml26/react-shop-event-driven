@@ -1,15 +1,15 @@
 import { Message } from "kafkajs";
-import { Subjects } from "./subject";
-import {Consumer} from "kafkajs";
+import { Topics } from "./topics";
+import { Consumer } from "kafkajs";
 
 interface Event {
-  subject: Subjects;
+  topic: Topics;
   data: any;
 }
 
 export abstract class BaseListener<T extends Event> {
-  abstract subject: T["subject"];
-  abstract onMessage(data: T["data"], msg: Message): void;
+  abstract subject: T["topic"];
+  abstract onMessage(data: T["data"]): void;
   client;
   constructor(client: Consumer) {
     this.client = client;
@@ -20,12 +20,12 @@ export abstract class BaseListener<T extends Event> {
       fromBeginning: true,
     });
     await this.client.run({
-      eachMessage: async ({message,partition}) => {
+      eachMessage: async ({ message, partition }) => {
         console.log(
           `Received message: ${message.value}, Partition => ${partition} `
         );
         const parsedData = this.parseMessage(message);
-        this.onMessage(parsedData, message);
+        this.onMessage(parsedData);
       },
     });
   }

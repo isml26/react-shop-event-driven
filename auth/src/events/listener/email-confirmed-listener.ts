@@ -1,14 +1,20 @@
-import { Message } from "kafkajs";
 import { BaseListener } from "../../../../common/src/events/base-listener";
 import { EmailConfirmedEvent } from "../../../../common/src/events/email-confirmed-event";
-import { Subjects } from "../../../../common/src/events/subject";
+import { Topics } from "../../../../common/src/events/topics";
 
 import { User } from "../../models/User";
 
 class EmailConfirmedListener extends BaseListener<EmailConfirmedEvent> {
-  readonly subject = Subjects.EmailConfirmed;
-  onMessage(data: EmailConfirmedEvent["data"], msg: Message): void {
-    console.log(data);
+  readonly subject = Topics.EmailConfirmed;
+  async onMessage(data: EmailConfirmedEvent["data"]) {
+    await User.findByIdAndUpdate(
+      {
+        _id: data.user_id,
+      },
+      {
+        confirmed: true,
+      }
+    );
   }
 }
 
