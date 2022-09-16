@@ -3,6 +3,7 @@ import { setJwt } from "../../services/jwt";
 import { User } from "../../models/User";
 import { UserValidate } from "../../validators/auth";
 import { BadRequestError, validateRequest } from "@igcommon/common";
+import { UserCreatedPublisher } from "../../events/publisher/email-confirmed-publisher";
 
 const router = express.Router();
 
@@ -19,9 +20,15 @@ router.post(
     }
 
     const user = User.build({ email, password });
-    await user.save();
+    try {
+      await user.save();
+      const user_id = user._id;
+      new UserCreatedPublisher(global.producer).publish({email,user_id})
+      setJwt(user, req);
+    } catch (error) {
+      console.log(error)
+    }
 
-    setJwt(user, req);
 
     res.status(201).send(user);
   }

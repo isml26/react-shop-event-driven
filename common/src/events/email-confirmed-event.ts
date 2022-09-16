@@ -1,9 +1,8 @@
-import { Subjects } from "./subject";
+import { Topics } from "./topics";
 
 export interface EmailConfirmedEvent {
-  subject: Subjects.EmailConfirmed;
+  topic: Topics.EmailConfirmed;
   data: {
     user_id: string;
-    email: string;
   };
 }

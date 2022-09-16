@@ -20,16 +20,16 @@ async function startServer() {
   try {
     await kafkaWrapper.connect(KAFKA_CONFIG);
     await new EmailConfirmedListener(global.consumer).listen();
-    // signalTraps.forEach(type => {
-    //   process.on(type, async () => {
-    //     try {
-    //       await global.consumer.disconnect()
-    //       console.log("ehe")
-    //     } finally {
-    //       process.kill(process.pid, type)
-    //     }
-    //   })
-    // })
+    signalTraps.forEach(type => {
+      process.on(type, async () => {
+        try {
+          await global.consumer.disconnect()
+          console.log("ehe")
+        } finally {
+          process.kill(process.pid, type)
+        }
+      })
+    })
 
     // process.on("SIGINT", () => {
     //   global.producer.disconnect().then(() => {
