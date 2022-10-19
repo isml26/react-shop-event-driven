@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MONGO_URI = "mongodb://localhost:27017/shop_users";
+const MONGO_URI = process.env.MONGO_URI;
 
 // write all async await function inside of a function
 

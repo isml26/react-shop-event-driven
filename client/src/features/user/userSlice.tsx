@@ -5,11 +5,20 @@ import axios from "axios";
 const initialState = {
   isLoading: false,
   userInfo: null, // for user object
-  error: null,
+  error: {
+    signin:null,
+    signup:null
+  },
   success: false, // for monitoring the registration process.
 };
 
 interface UserLogin {
+  email: string
+  password: string
+}
+
+interface UserSignup {
+  name:string,
   email: string
   password: string
 }
@@ -55,6 +64,30 @@ export const loginUser = createAsyncThunk("user/login", async ({ email, password
 }
 );
 
+export const signupUser = createAsyncThunk("user/signup", async ({ name,email, password }: UserSignup, thunkAPI) => {
+  try {
+    const res = await axios.post(
+      "http://localhost:3001/api/users/signup",
+      {name, email, password },
+      { withCredentials: true }
+    );
+    return res.data;
+  } catch (err: any) {
+    console.log(err.response.data)
+    return thunkAPI.rejectWithValue(
+      <div className="alert">
+        <h4>Ooops...</h4>
+        <ul className="list-alert">
+          {
+            //@ts-ignore
+            err.response.data.errors.map(err => <li key={err.message}>{err.message}</li>)
+          }
+        </ul>
+      </div>);
+  }
+}
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -80,8 +113,21 @@ const userSlice = createSlice({
     builder.addCase(loginUser.rejected, (state, {payload}) => {
       state.isLoading = false;
       //@ts-ignore
-      state.error = payload;
+      state.error.signin = payload;
     });
+    builder.addCase(signupUser.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(signupUser.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.userInfo = action.payload;
+    });
+    builder.addCase(signupUser.rejected, (state, {payload}) => {
+      state.isLoading = false;
+      //@ts-ignore
+      state.error.signup = payload;
+    });
+
   },
 });
 

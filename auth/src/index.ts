@@ -17,6 +17,9 @@ async function startServer() {
   if (!process.env.JWT_KEY) {
     console.log("JWT_KEY MUST BE DEFINED!!");
   }
+  if (!process.env.MONGO_URI) {
+    console.log("MONGO_URI MUST BE DEFINED!!");
+  }
   try {
     await kafkaWrapper.connect(KAFKA_CONFIG);
     await new EmailConfirmedListener(global.consumer).listen();
